@@ -5,7 +5,7 @@ the Markdown `![]()` image embed syntax to support additional media formats.
 
 ~~YouTube only at first.~~
 
-Base on [goldmark-embed](github.com/fundipper/goldmark-embed), Support embed video use `ifmarme`, customize the platform by yourself.
+Base on [goldmark-embed](https://github.com/fundipper/goldmark-embed), Support customize option to embed video use `ifmarme`.
 
 ## Demo
 
@@ -25,17 +25,38 @@ Becomes this HTML:
 
 ```html
 <h1>Hello goldmark-videos</h1>
-<p><iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-allowfullscreen></iframe></p>
+<p>
+	<iframe
+		width="560"
+		height="315"
+		src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+		frameborder="0"
+		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+		allowfullscreen
+	></iframe>
+</p>
 
-<p><iframe width="560" height="315" src="https://v.qq.com/txp/iframe/player.html?vid=i0042v2fm34" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-allowfullscreen></iframe></p>
+<p>
+	<iframe
+		width="560"
+		height="315"
+		src="https://v.qq.com/txp/iframe/player.html?vid=i0042v2fm34"
+		frameborder="0"
+		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+		allowfullscreen
+	></iframe>
+</p>
 
-<p><iframe width="560" height="315" src="//player.bilibili.com/player.html?aid=634140852&bvid=BV1sb4y1t7xV&cid=442265383&page=1" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-allowfullscreen></iframe></p>
+<p>
+	<iframe
+		width="560"
+		height="315"
+		src="//player.bilibili.com/player.html?aid=634140852&bvid=BV1sb4y1t7xV&cid=442265383&page=1"
+		frameborder="0"
+		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+		allowfullscreen
+	></iframe>
+</p>
 ```
 
 ### Installation
