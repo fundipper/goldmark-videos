@@ -3,8 +3,6 @@
 goldmark-embed is an extension for the [goldmark][goldmark] library that extends
 the Markdown `![]()` image embed syntax to support additional media formats.
 
-[goldmark]: http://github.com/yuin/goldmark
-
 ~~YouTube only at first.~~
 
 Base on [goldmark-embed](github.com/fundipper/goldmark-embed), Support embed video use `ifmarme`, customize the platform by yourself.
