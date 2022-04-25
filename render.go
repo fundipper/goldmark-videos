@@ -7,8 +7,8 @@ import (
 	"github.com/yuin/goldmark/util"
 )
 
-// IframeAttributeFilter defines attribute names which iframe elements can have.
-var IframeAttributeFilter = html.ImageAttributeFilter.Extend(
+// VideoAttributeFilter defines attribute names which video elements can have.
+var VideoAttributeFilter = html.ImageAttributeFilter.Extend(
 	[]byte("scrolling"),
 	[]byte("frameborder"),
 	[]byte("framespacing"),
@@ -43,7 +43,7 @@ func (r *Renderer) renderVideo(w util.BufWriter, source []byte, node ast.Node, e
 		}
 		_ = w.WriteByte('"')
 		if n.Attributes() != nil {
-			html.RenderAttributes(w, n, IframeAttributeFilter)
+			html.RenderAttributes(w, n, VideoAttributeFilter)
 		}
 		_ = w.WriteByte('>')
 	} else {
