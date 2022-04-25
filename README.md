@@ -69,23 +69,25 @@ go get github.com/fundipper/goldmark-videos
 
 ```go
   markdown := goldmark.New(
-    goldmark.WithExtensions(
-      videos.NewExtender(
-        videos.Option{
-          Host: "www.youtube.com",
-          Path: "/embed",
-        },
-        videos.Option{
-          Host: "v.qq.com",
-          Path: "/txp/iframe/player.html",
-        },
-        videos.Option{
-          Host: "player.bilibili.com",
-          Path: "/player.html",
-        }
-      ),
-    ),
-  )
+	goldmark.WithExtensions(
+		videos.NewExtender(
+			map[string]string{
+				"www.youtube.com":     "/embed",
+				"v.qq.com":            "/txp/iframe/player.html",
+				"player.bilibili.com": "/player.html",
+			},
+			map[string]string{
+				"width":           "560",
+				"height":          "315",
+				"border":          "0",
+				"scrolling":       "no",
+				"frameborder":     "no",
+				"framespacing":    "0",
+				"allowfullscreen": "true",	
+			},
+		),
+	),
+)
   var buf bytes.Buffer
   if err := markdown.Convert([]byte(source), &buf); err != nil {
     panic(err)

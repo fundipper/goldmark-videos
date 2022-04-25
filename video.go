@@ -13,13 +13,13 @@ type Video struct {
 }
 
 // NewVideo returns a new video node.
-func NewVideo(img *ast.Image) *Video {
+func NewVideo(image *ast.Image) *Video {
 	c := &Video{
-		Image: *img,
+		Image: *image,
 	}
 
-	c.Destination = img.Destination
-	c.Title = img.Title
+	c.Destination = image.Destination
+	c.Title = image.Title
 	return c
 }
 

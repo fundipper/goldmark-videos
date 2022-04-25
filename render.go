@@ -3,16 +3,26 @@ package videos
 import (
 	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/renderer"
+	"github.com/yuin/goldmark/renderer/html"
 	"github.com/yuin/goldmark/util"
 )
 
+// IframeAttributeFilter defines attribute names which iframe elements can have.
+var IframeAttributeFilter = html.ImageAttributeFilter.Extend(
+	[]byte("scrolling"),
+	[]byte("frameborder"),
+	[]byte("framespacing"),
+	[]byte("allowfullscreen"),
+)
+
 // Renderer struct is a renderer.NodeRenderer implementation for the extension.
-type Renderer struct{}
+type Renderer struct {
+	html.Config
+}
 
 // NewRenderer builds a new Renderer with given options and returns it.
 func NewRenderer() renderer.NodeRenderer {
-	r := &Renderer{}
-	return r
+	return &Renderer{}
 }
 
 // RegisterFuncs implements NodeRenderer.RegisterFuncs.
@@ -21,13 +31,23 @@ func (r *Renderer) RegisterFuncs(reg renderer.NodeRendererFuncRegisterer) {
 }
 
 func (r *Renderer) renderVideo(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-	if entering {
-		return ast.WalkContinue, nil
+	n := node.(*Video)
+	for k, v := range extender.Attribute {
+		n.SetAttributeString(k, util.StringToReadOnlyBytes(v))
 	}
 
-	v := node.(*Video)
-	w.WriteString(`<iframe width="560" height="315" src="`)
-	w.Write(v.Destination)
-	w.WriteString(`" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>`)
+	if entering {
+		_, _ = w.WriteString("<iframe src=\"")
+		if r.Unsafe || !html.IsDangerousURL(n.Destination) {
+			_, _ = w.Write(util.EscapeHTML(util.URLEscape(n.Destination, true)))
+		}
+		_ = w.WriteByte('"')
+		if n.Attributes() != nil {
+			html.RenderAttributes(w, n, IframeAttributeFilter)
+		}
+		_ = w.WriteByte('>')
+	} else {
+		_, _ = w.WriteString("</iframe>")
+	}
 	return ast.WalkContinue, nil
 }

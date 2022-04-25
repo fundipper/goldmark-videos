@@ -9,20 +9,16 @@ import (
 
 var extender *Extender
 
-// Option is a functional option type for this extension.
-type Option struct {
-	Host string
-	Path string
-}
-
 type Extender struct {
-	Options []Option
+	Source    map[string]string
+	Attribute map[string]string
 }
 
 // New returns a new Embed extension.
-func NewExtender(opts ...Option) goldmark.Extender {
+func NewExtender(source map[string]string, attribute map[string]string) goldmark.Extender {
 	extender = &Extender{
-		Options: opts,
+		Source:    source,
+		Attribute: attribute,
 	}
 	return extender
 }

@@ -3,7 +3,6 @@ package videos
 import (
 	"fmt"
 	"net/url"
-	"strings"
 
 	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/parser"
@@ -17,16 +16,17 @@ func NewTransformer() *Transformer {
 }
 
 func (a *Transformer) Transform(node *ast.Document, reader text.Reader, pc parser.Context) {
-	replaceImages := func(n ast.Node, entering bool) (ast.WalkStatus, error) {
+	ast.Walk(node, func(n ast.Node, entering bool) (ast.WalkStatus, error) {
 		if !entering {
 			return ast.WalkContinue, nil
 		}
+
 		if n.Kind() != ast.KindImage {
 			return ast.WalkContinue, nil
 		}
 
-		img := n.(*ast.Image)
-		u, err := url.Parse(string(img.Destination))
+		image := n.(*ast.Image)
+		u, err := url.Parse(string(image.Destination))
 		if err != nil {
 			msg := ast.NewString([]byte(fmt.Sprintf("<!-- %s -->", err)))
 			msg.SetCode(true)
@@ -34,24 +34,13 @@ func (a *Transformer) Transform(node *ast.Document, reader text.Reader, pc parse
 			return ast.WalkContinue, nil
 		}
 
-		var ok bool
-		for _, v := range extender.Options {
-			if u.Host == v.Host && strings.HasPrefix(u.Path, v.Path) {
-
-				ok = true
-				break
-			}
-		}
-
-		if !ok {
+		path, ok := extender.Source[u.Host]
+		if !ok || u.Path != path {
 			return ast.WalkContinue, nil
 		}
 
-		v := NewVideo(img)
-		n.Parent().ReplaceChild(n.Parent(), n, v)
+		n.Parent().ReplaceChild(n.Parent(), n, NewVideo(image))
 
 		return ast.WalkContinue, nil
-	}
-
-	ast.Walk(node, replaceImages)
+	})
 }

@@ -21,17 +21,19 @@ func Example() {
 	markdown := goldmark.New(
 		goldmark.WithExtensions(
 			videos.NewExtender(
-				videos.Option{
-					Host: "www.youtube.com",
-					Path: "/embed",
+				map[string]string{
+					"www.youtube.com":     "/embed",
+					"v.qq.com":            "/txp/iframe/player.html",
+					"player.bilibili.com": "/player.html",
 				},
-				videos.Option{
-					Host: "v.qq.com",
-					Path: "/txp/iframe/player.html",
-				},
-				videos.Option{
-					Host: "player.bilibili.com",
-					Path: "/player.html",
+				map[string]string{
+					"width":           "560",
+					"height":          "315",
+					"border":          "0",
+					"scrolling":       "no",
+					"frameborder":     "no",
+					"framespacing":    "0",
+					"allowfullscreen": "true",
 				},
 			),
 		),
