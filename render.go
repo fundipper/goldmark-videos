@@ -41,7 +41,14 @@ func (r *Renderer) renderVideo(w util.BufWriter, source []byte, node ast.Node, e
 		if r.Unsafe || !html.IsDangerousURL(n.Destination) {
 			_, _ = w.Write(util.EscapeHTML(util.URLEscape(n.Destination, true)))
 		}
+		_, _ = w.WriteString(`" alt="`)
+		_, _ = w.Write(util.EscapeHTML(n.Text(source)))
 		_ = w.WriteByte('"')
+		if n.Title != nil {
+			_, _ = w.WriteString(` title="`)
+			_, _ = w.Write(n.Title)
+			_ = w.WriteByte('"')
+		}
 		if n.Attributes() != nil {
 			html.RenderAttributes(w, n, VideoAttributeFilter)
 		}
